@@ -42,8 +42,8 @@ $(function () {
             error_name = true;
         }
         else {
-            //  //TODO 校验用户名是否存在
-            $.get('/user/register_username_check/',{'username':$('#user_name').val()},function (data) {
+            //  //校验用户名是否存在
+            $.get('/user/register_username_check/?username=' + $('#user_name').val(), function(data){
                 if(data.result){
                     $('#user_name').next().hide();
                     error_name = false;
@@ -52,9 +52,6 @@ $(function () {
                     error_name = true;
                 }
             });
-
-
-
         }
     }
 
@@ -92,6 +89,16 @@ $(function () {
         if (re.test($('#email').val())) {
             $('#email').next().hide();
             error_email = false;
+
+            $.get('/user/register_email_check/?email=' + $('#email').val(), function(data){
+                if(data.result){
+                    $('#email').next().hide();
+                    error_email = false;
+                }else{
+                    $('#email').next().html('此邮箱已注册').show();
+                    error_email = true;
+                }
+            });
         }
         else {
             $('#email').next().html('你输入的邮箱格式不正确').show();
